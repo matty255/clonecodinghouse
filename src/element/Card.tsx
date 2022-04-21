@@ -9,11 +9,11 @@ interface CardProps {
 
 const SquareImage = tw.img`
 object-cover object-center rounded-[2%] w-[22rem] h-[14.3rem]
-hover:bg-gray-400 hover:opacity-70 shadow-md
+shadow-md z-30 pointer-events-auto
 `
 
 const BigSquareImage = tw.img`
-bg-center bg-contain w-full max-w-fit sm:h-[640px] md:h-[768px] lg:h-[800px]
+bg-center bg-contain w-full max-w-fit sm:h-[640px] md:h-[768px]
 `
 
 const Card = ({ shape = '1', src = 'https://resources.archisketch.com/images/Xx9q9qjFDF46D26A4A54BA5/550xAUTO/Xx9q9qjFDF46D26A4A54BA5.png', onClick = () => {} }: CardProps) => {

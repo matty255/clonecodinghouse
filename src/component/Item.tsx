@@ -2,10 +2,11 @@ import { useDispatch } from 'react-redux'
 import saveAs from 'file-saver'
 import { action } from '../redux/modules/toDoList'
 import Card from '../element/Card'
-import { useNavigate } from 'react-router-dom'
-import React, { useEffect, useState } from 'react'
+
+import React, { useState } from 'react'
 import tw from 'tailwind-styled-components'
-import ModalContents from './ModalContents'
+import Modals from './Modals'
+import Icon from '../element/Icon'
 
 interface IProps {
   toDo: ToDo;
@@ -16,11 +17,11 @@ interface IProps {
 }
 
 const Headers = tw.div`
-flex h-14 border-b border-gray-200 justify-start items-center gap-3 p-2
+fixed h-14 w-full border-b border-gray-200 justify-start items-center gap-3 p-2
 `
 
 const CloseBtn = tw.button`
-flex justify-start items-start bg-gray-100 h-8 w-11 rounded-[10%] px-2.5 pt-1 text-gray-600
+fixed bg-gray-100 h-8 w-14 rounded-[10%] px-4 text-gray-600 
 `
 
 const ModalCover = tw.div`
@@ -28,14 +29,17 @@ w-full h-screen fixed bg-white inset-0 z-40
 `
 
 const CheckBox = tw.input`
-absolute m-4 outline-none z-10
+absolute m-4 outline-none text-lg text-dpurple-200 w-7 h-7 font-min2
+rounded-md border-2 hover:border-durple-200 disabled:text-gray-300 
+disabled:bg-gray-200 disabled:border-0
+${(props:any) => (props.selected ? 'opacity-100' : '')};
 `
 
 const DownloadBtn = tw.button`
- text-gray-900 z-10 absolute sm:ml-36 lg:ml-48 xl:ml-60 mt-4
+ text-white z-10 absolute right-6 mt-4
 `
 const DownloadBox = tw.div`
-absolute sm:ml-36 lg:ml-28 xl:ml-40 mt-10 z-20 
+absolute sm:ml-36 lg:ml-36 xl:ml-52 mt-10 z-20 
 `
 
 const DownloadInnerBox = tw.div`
@@ -43,7 +47,12 @@ flex flex-col bg-white text-gray-400 gap-1 rounded-sm py-1
 `
 
 const MenuBtns = tw.button`
-text-left hover:bg-gray-100 p-1 px-2 
+text-left hover:bg-gray-100 p-1 px-2 z-20
+`
+
+const Hidden = tw.div`
+  opacity-0 hover:opacity-70 h-[14.3rem] md:w-[29.3%] lg:w-[22%] 2xl:w-[17.58%] absolute 
+  hover:bg-gray-500 rounded-[2%] cursor-pointer pointer-events-auto
 `
 
 function Item ({ toDo, checker, setChecker }: IProps) {
@@ -51,23 +60,17 @@ function Item ({ toDo, checker, setChecker }: IProps) {
   const [modal, setModal] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const onToggle = (event: any) => {
     dispatch(action.toggleToDo({ id, checked: event.target.checked as boolean }))
     setChecker(checker + 1)
+
     if (checked === true) {
       return setChecker(checker - 1)
     }
   }
 
-  const onDeleteToDo = () => {
-    dispatch(action.deleteToDo({ checked }))
-    navigate('/', { replace: true })
-  }
-
   const onlyOneDeleteToDo = () => {
     dispatch(action.dToDo({ id }))
-    navigate('/', { replace: true })
   }
 
   const downloadToDo = (e:any) => {
@@ -75,8 +78,12 @@ function Item ({ toDo, checker, setChecker }: IProps) {
   }
 
   const controlModal = (e:any) => {
+    if (e.target !== e.currentTarget) {
+      return
+    }
     setModal(state => !state)
-    console.log(id)
+
+    // console.log(id)
   }
 
   const controlMenu = (e:any) => {
@@ -85,13 +92,15 @@ function Item ({ toDo, checker, setChecker }: IProps) {
 
   return (
     <>
+    {checked && <CheckBox type="checkbox" defaultChecked={checked} onChange={onToggle} selected={checked} />}
 
-      {/* <div>{id}</div> */}
-      {/* <p>{content}</p> */}
+    <Hidden onClick={controlModal}>
 
       <CheckBox type="checkbox" defaultChecked={checked} onChange={onToggle} />
-      <DownloadBtn onClick={controlMenu}><svg viewBox="64 64 896 896" focusable="false" data-icon="ellipsis" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M176 511a56 56 0 10112 0 56 56 0 10-112 0zm280 0a56 56 0 10112 0 56 56 0 10-112 0zm280 0a56 56 0 10112 0 56 56 0 10-112 0z" fill="currentColor"></path></svg></DownloadBtn>
 
+      <DownloadBtn onClick={controlMenu}><Icon name="dots" iconSize={24} /></DownloadBtn>
+
+      </Hidden>
       { showMenu && <>
       <DownloadBox>
         <DownloadInnerBox>
@@ -102,19 +111,17 @@ function Item ({ toDo, checker, setChecker }: IProps) {
       </DownloadBox>
       </>}
 
-      <Card src={_id} onClick={controlModal} />
+      <Card src={_id} />
 
     { modal &&
-    <ModalCover>
 
+    <ModalCover>
     <Headers>
     <CloseBtn onClick={controlModal}>
-
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16.192 6.344l-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z" fill="currentColor"></path></svg></CloseBtn>
-
+     <Icon name="cancel" iconSize={24} />
+     </CloseBtn>
     </Headers>
-      <ModalContents toDo={toDo} />
-
+      <Modals toDo={toDo} />
     </ModalCover>
     }
 
