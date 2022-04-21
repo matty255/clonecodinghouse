@@ -1,20 +1,19 @@
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux'
 import saveAs from 'file-saver'
-import { action } from "../redux/modules/toDoList";
-import Card from "../element/Card";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import tw from "tailwind-styled-components";
-import ModalContents from "./ModalContents"
+import { action } from '../redux/modules/toDoList'
+import Card from '../element/Card'
+import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import tw from 'tailwind-styled-components'
+import ModalContents from './ModalContents'
 
 interface IProps {
   toDo: ToDo;
-  
+
   checker: number,
   setChecker: Function
 
 }
-
 
 const Headers = tw.div`
 flex h-14 border-b border-gray-200 justify-start items-center gap-3 p-2
@@ -27,8 +26,6 @@ flex justify-start items-start bg-gray-100 h-8 w-11 rounded-[10%] px-2.5 pt-1 te
 const ModalCover = tw.div`
 w-full h-screen fixed bg-white inset-0 z-40
 `
-
-
 
 const CheckBox = tw.input`
 absolute m-4 outline-none z-10
@@ -49,48 +46,45 @@ const MenuBtns = tw.button`
 text-left hover:bg-gray-100 p-1 px-2 
 `
 
-function Item({ toDo, checker, setChecker }: IProps) {
-  const { id, _id, checked } = toDo;
+function Item ({ toDo, checker, setChecker }: IProps) {
+  const { id, _id, checked } = toDo
   const [modal, setModal] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const onToggle = (event: any) => {
-    dispatch(action.toggleToDo({ id, checked: event.target.checked as boolean }));
-    setChecker(checker +1)
-    if(checked === true) {
-      return setChecker(checker -1)
+    dispatch(action.toggleToDo({ id, checked: event.target.checked as boolean }))
+    setChecker(checker + 1)
+    if (checked === true) {
+      return setChecker(checker - 1)
     }
-  };
+  }
 
-  
   const onDeleteToDo = () => {
-    dispatch(action.deleteToDo({checked}));
-    navigate("/",  { replace: true })
-  };
+    dispatch(action.deleteToDo({ checked }))
+    navigate('/', { replace: true })
+  }
 
   const onlyOneDeleteToDo = () => {
-    dispatch(action.dToDo({id}));
-    navigate("/",  { replace: true })
-  };
+    dispatch(action.dToDo({ id }))
+    navigate('/', { replace: true })
+  }
 
   const downloadToDo = (e:any) => {
     saveAs(_id, 'save.jpg') // Put your image url here.
-  };
+  }
 
   const controlModal = (e:any) => {
     setModal(state => !state)
     console.log(id)
-  };
+  }
 
   const controlMenu = (e:any) => {
     setShowMenu(state => !state)
   }
 
-
   return (
     <>
-  
 
       {/* <div>{id}</div> */}
       {/* <p>{content}</p> */}
@@ -109,18 +103,14 @@ function Item({ toDo, checker, setChecker }: IProps) {
       </>}
 
       <Card src={_id} onClick={controlModal} />
-      
-
-
 
     { modal &&
     <ModalCover>
 
     <Headers>
-    <CloseBtn  onClick={controlModal}>
+    <CloseBtn onClick={controlModal}>
 
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16.192 6.344l-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z" fill="currentColor"></path></svg></CloseBtn>
-
 
     </Headers>
       <ModalContents toDo={toDo} />
@@ -129,7 +119,7 @@ function Item({ toDo, checker, setChecker }: IProps) {
     }
 
     </>
-  );
+  )
 }
 
-export default Item;
+export default Item

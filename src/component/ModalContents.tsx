@@ -1,110 +1,100 @@
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux'
+
 import saveAs from 'file-saver'
-import { action } from "../redux/modules/toDoList";
-import Card from "../element/Card";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState, useRef, createRef } from "react";
-import tw from "tailwind-styled-components";
-import { RootState } from "../redux/configureStore";
-import Slides from "./Slides"
+import { action } from '../redux/modules/toDoList'
+import Card from '../element/Card'
+import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState, useRef, createRef } from 'react'
+import tw from 'tailwind-styled-components'
+import { RootState } from '../redux/configureStore'
+import Slides from './Slides'
 
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-
-
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-
+import Slider from 'react-slick'
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
+ 
 interface IProps {
     toDo: {
         id: number,
         _id:string,
         checked:boolean
-    } 
+    }
 }
 
 export const Customs = tw(Slider)`
 mx-auto w-full h-screen
-`;
+`
 
 const PrevBtn = tw.button`
   z-10 text-gray-500 fixed left-10 top-1/2 bg-gray-100 rounded-md p-2
-`;
+`
 
 const NextBtn = tw.button`
   z-10 text-gray-500 fixed right-10 top-1/2 bg-gray-100 rounded-md p-2
-`;
+`
 
-function ModalContents({ toDo }: IProps) {
-    const { id, _id, checked } = toDo;
+function ModalContents ({ toDo }: IProps) {
+  const { id, _id, checked } = toDo
 
-
-    // const sliderRef = useRef();
+  // const sliderRef = useRef();
 
   const [slideIndex, setSlideIndex] = useState(id)
   console.log(slideIndex)
   const [updateCount, setUpdateCount] = useState(0)
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const onToggle = (event: any) => {
-    dispatch(action.toggleToDo({ id, checked: event.target.checked as boolean }));
-  };
-
+    dispatch(action.toggleToDo({ id, checked: event.target.checked as boolean }))
+  }
 
   const onDeleteToDo = () => {
-    dispatch(action.deleteToDo({checked}));
-    navigate("/",  { replace: true })
-  };
+    dispatch(action.deleteToDo({ checked }))
+    navigate('/', { replace: true })
+  }
 
   const onlyOneDeleteToDo = () => {
-    dispatch(action.dToDo({id}));
-    navigate("/",  { replace: true })
-  };
+    dispatch(action.dToDo({ id }))
+    navigate('/', { replace: true })
+  }
 
   const downloadToDo = (e:any) => {
     saveAs(_id, 'save.jpg') // Put your image url here.
-  };
+  }
 
   	const settings = {
     	dots: false,
-        infinite: false,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        initialSlide: slideIndex,
-        arrows :false
+    infinite: false,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    initialSlide: slideIndex,
+    arrows: false
 
-    };
-    
+  }
 
-    const toDoList: ToDoList = useSelector((state: RootState) => state.toDoList.toDoList);
+  const toDoList: ToDoList = useSelector((state: RootState) => state.toDoList.toDoList)
 
-    const prev = () => {
-        if (slideIndex < 0) {
-            return
-        }
-        setSlideIndex(slideIndex -1)
-        Customs.current.slickGoTo(slideIndex, true)
-        console.log(slideIndex)
+  const prev = () => {
+    if (slideIndex < 0) {
+      return
     }
-    const next = () => {
-        if (slideIndex >= toDoList.length) {
-            return
-        }
-        setSlideIndex(slideIndex +1)
-        Customs.current.slickGoTo(slideIndex, true)
-    
+    setSlideIndex(slideIndex - 1)
+    Customs.current.slickGoTo(slideIndex, true)
+    console.log(slideIndex)
+  }
+  const next = () => {
+    if (slideIndex >= toDoList.length) {
+      return
     }
-
+    setSlideIndex(slideIndex + 1)
+    Customs.current.slickGoTo(slideIndex, true)
+  }
 
   return (
     <>
 
-
 <div className="flex-row flex">
-    
+
                 <PrevBtn onClick={prev}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12.707 17.293L8.414 13 18 13 18 11 8.414 11 12.707 6.707 11.293 5.293 4.586 12 11.293 18.707z" fill="currentColor"></path></svg>
                 </PrevBtn>
@@ -113,14 +103,12 @@ function ModalContents({ toDo }: IProps) {
         </Customs>
         <NextBtn onClick={next}>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M11.293 17.293L12.707 18.707 19.414 12 12.707 5.293 11.293 6.707 15.586 11 6 11 6 13 15.586 13z" fill="currentColor"></path></svg>
- 
+
                 </NextBtn>
             </div>
 
-
-            
     </>
-  );
+  )
 }
 
-export default ModalContents;
+export default ModalContents
