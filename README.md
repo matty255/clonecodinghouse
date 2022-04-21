@@ -1,46 +1,39 @@
-# Getting Started with Create React App
+# typescript를 사용하는 과제 프로젝트!
+ 
+과제 : 존재하는 사이트의 일부분을 클론코딩하기(제작중)
+ =
+슬라이드 커스텀과 체크박스 상태관리를 중점적으로 봐야 할듯
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+기술스택
+  -
+- react
+- typescript
+- redux toolkit
+- file-saver
+- eslint
+- react-slick
+- tailwindcss
+- tailwind-styled-components
 
-## Available Scripts
 
-In the project directory, you can run:
 
-### `yarn start`
+클리어 조건 정리
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+갤러리
+  - 
+- 카드는 줄당 4~5개로 고정, 이미지가 깨지지 않게 비율을 맞춰 그리드 + 플렉스
+- 동적배열로 불러오되 끝부분에 숫자가 맞지 않으면 왼쪽 정렬
+- 각 카드에 호버시 체크박스와 작은 드롭다운(개별 삭제와 개별 다운로드)을 볼 수 있게
+- 체크박스가 체크되지 않았을 경우 - 전체 그림이 몇개인지 알려주기
+- 체크박스가 하나라도 체크된 경우 - 선택된 그림이 몇개인지 보여주고 다운로드, 삭제, 전체선택, 전체선택 취소 버튼을 상단에 띄우기
+- 기타 호버시 애니메이션, 트랜지션, 테마컬러(민트) 적용하기
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+상세페이지
+  -
+- 카드를 클릭하면 상세페이지에서 큰 스크린 + 원본비율로 상세페이지 슬라이드
+- 슬라이드의 시작위치는 각 카드이며 전환시 animation은 없음으로 설정
+- 화살표가 맨 앞으로 가면 버튼을 살짝 흐리게 보여주고 disable 처리하기
+- 주소를 부여하지 않고 풀스크린 모달로 소환하기
+- 개별 슬라이드 상단에 표시되는 다운로드는 아이콘+버튼 / 삭제버튼은 아이콘만 보이게
+- 슬라이드 arrow 커스텀하기
+- 상세페이지에는 체크박스가 없게
