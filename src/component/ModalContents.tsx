@@ -26,15 +26,15 @@ interface IProps {
 }
 
 export const Customs = tw(Slider)`
-mx-auto w-3/4
+mx-auto w-full h-screen
 `;
 
 const PrevBtn = tw.button`
-  z-10 text-white
+  z-10 text-gray-500 fixed left-10 top-1/2 bg-gray-100 rounded-md p-2
 `;
 
 const NextBtn = tw.button`
-  z-10 text-white
+  z-10 text-gray-500 fixed right-10 top-1/2 bg-gray-100 rounded-md p-2
 `;
 
 function ModalContents({ toDo }: IProps) {
@@ -102,16 +102,18 @@ function ModalContents({ toDo }: IProps) {
   return (
     <>
 
-<div className="flex-row hidden md:flex">
+
+<div className="flex-row flex">
     
                 <PrevBtn onClick={prev}>
-                    이전
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12.707 17.293L8.414 13 18 13 18 11 8.414 11 12.707 6.707 11.293 5.293 4.586 12 11.293 18.707z" fill="currentColor"></path></svg>
                 </PrevBtn>
     	<Customs {...settings} ref={Customs}>
         {toDoList && toDoList.map((toDo, index) => <div key={toDo.id}><Slides toDo={toDo} /></div>)}
         </Customs>
         <NextBtn onClick={next}>
-                   다음
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M11.293 17.293L12.707 18.707 19.414 12 12.707 5.293 11.293 6.707 15.586 11 6 11 6 13 15.586 13z" fill="currentColor"></path></svg>
+ 
                 </NextBtn>
             </div>
 

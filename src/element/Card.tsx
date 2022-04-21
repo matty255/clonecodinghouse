@@ -9,12 +9,12 @@ interface CardProps {
 
 
 const SquareImage = tw.img`
-object-cover object-center rounded-[2%] w-[20rem] h-[13rem]
+object-cover object-center rounded-[2%] w-[22rem] h-[14.3rem]
 hover:bg-gray-400 hover:opacity-70 shadow-md
 `
 
 const BigSquareImage = tw.img`
-object-cover object-center rounded-md w-fit h-fit
+bg-center bg-contain w-full max-w-fit sm:h-[640px] md:h-[768px] lg:h-[800px]
 `
 
 

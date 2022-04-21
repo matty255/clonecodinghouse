@@ -16,8 +16,16 @@ interface IProps {
 }
 
 
+const Headers = tw.div`
+flex h-14 border-b border-gray-200 justify-start items-center gap-3 p-2
+`
+
+const CloseBtn = tw.button`
+flex justify-start items-start bg-gray-100 h-8 w-11 rounded-[10%] px-2.5 pt-1 text-gray-600
+`
+
 const ModalCover = tw.div`
-w-full h-screen fixed bg-red-300 inset-0 overflow-hidden z-50
+w-full h-screen fixed bg-white inset-0 z-40
 `
 
 
@@ -107,7 +115,14 @@ function Item({ toDo, checker, setChecker }: IProps) {
 
     { modal &&
     <ModalCover>
-      <button onClick={controlModal}>모달닫기버튼</button>
+
+    <Headers>
+    <CloseBtn  onClick={controlModal}>
+
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16.192 6.344l-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z" fill="currentColor"></path></svg></CloseBtn>
+
+
+    </Headers>
       <ModalContents toDo={toDo} />
 
     </ModalCover>
