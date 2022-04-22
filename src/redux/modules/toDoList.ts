@@ -27,7 +27,7 @@ export const reducer = {
     state.toDoList = state.toDoList.filter((todo: ToDo) => todo.checked === false)
   },
   dToDo: (state: IToDoListState, action: IDToDoAction) => {
-    state.toDoList = state.toDoList.filter((todo: ToDo) => todo.id !== action.payload.id)
+    state.toDoList = state.toDoList.filter((todo: ToDo) => todo._id !== action.payload._id)
   }
 
 }

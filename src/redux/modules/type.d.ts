@@ -1,6 +1,6 @@
 type ToDo = {
     id: number;
-    content: string;
+
     _id: string;
     checked: boolean;
   };
@@ -33,7 +33,7 @@ type ToDo = {
   }
 
 interface IDToDoPayload {
-  id: number;
+  _id: string;
 }
 
 interface IDToDoAction extends IAction {

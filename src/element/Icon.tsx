@@ -7,37 +7,36 @@ import { ReactComponent as Dots } from '../static/Dots.svg'
 interface IconProps {
   name: string,
   iconSize?: number,
-  className: string,
-  onClick: Function
+
 }
 
-const Icon = ({ name = 'download', iconSize = 14, className = '', onClick = () => {} }: IconProps) => {
+const Icon = ({ name = 'download', iconSize = 14 }: IconProps) => {
   if (name === 'download') {
     return (
-            <div className={className} onClick={() => onClick}>
-                <Download width={iconSize} height={iconSize} />
-            </div>
+
+                <Download width={iconSize} height={iconSize} className="pointer-events-none" />
+
     )
   }
   if (name === 'delete') {
     return (
-            <div className={className} onClick={() => onClick}>
-                <Delete width={iconSize} height={iconSize} />
-            </div>
+
+                <Delete width={iconSize} height={iconSize} className="pointer-events-none" />
+
     )
   }
   if (name === 'cancel') {
     return (
-            <div className={className} onClick={() => onClick}>
-                <Cancel width={iconSize} height={iconSize} />
-            </div>
+    
+                <Cancel width={iconSize} height={iconSize} className="pointer-events-none" />
+
     )
   }
   if (name === 'dots') {
     return (
-            <div className={className} onClick={() => onClick}>
-                <Dots width={iconSize} height={iconSize} />
-            </div>
+
+                <Dots width={iconSize} height={iconSize} className="pointer-events-none" />
+ 
     )
   } else return null
 }
@@ -45,8 +44,6 @@ const Icon = ({ name = 'download', iconSize = 14, className = '', onClick = () =
 Icon.defaultProps = {
   name: 'download',
   iconSize: 14,
-  className: '',
-  onClick: () => {}
 }
 
 export default Icon

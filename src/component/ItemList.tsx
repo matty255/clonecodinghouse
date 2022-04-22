@@ -1,13 +1,10 @@
 import React, { useState } from 'react'
 import tw from 'tailwind-styled-components'
 import { useSelector, useDispatch } from 'react-redux'
-
-import Item from './Item'
 import { RootState } from '../redux/configureStore'
-
 import { action } from '../redux/modules/toDoList'
-
 import saveAs from 'file-saver'
+import Item from './Item'
 import Icon from '../element/Icon'
 
 const CardBox = tw.div`
@@ -45,14 +42,14 @@ const TextBtn = tw.button`
  px-2 py-[0.15rem] border border-gray-200 mx-1 rounded-sm text-gray-500
 `
 
-function CardList () {
+function ItemList () {
   const dispatch = useDispatch()
   const [rerender, setRerender] = useState(false)
   const [checker, setChecker] = useState(0)
-  // console.log(checker)
+
 
   const toDoList: ToDoList = useSelector((state: RootState) => state.toDoList.toDoList)
-  // console.log(toDoList)
+
   const onDeleteToDo = () => {
     dispatch(action.deleteToDo(toDoList))
   }
@@ -72,6 +69,7 @@ function CardList () {
         dispatch(action.toggleToDo({ id: x.id, checked: false }))
         setRerender(false)
         setChecker(0)
+
       })
     } else if (rerender === false) {
       toDoList.forEach((x) => {
@@ -81,6 +79,15 @@ function CardList () {
       })
     }
   }
+
+  const allCancel = (event: any) => {
+    toDoList.forEach((x) => {
+      dispatch(action.toggleToDo({ id: x.id, checked: false }))
+      setRerender(false)
+      setChecker(0)
+    })
+  }
+
 
   return (
     <>
@@ -106,11 +113,11 @@ function CardList () {
     <Icon name="download" iconSize={14} /></IconBtn>
 
     <IconBtn onClick={onDeleteToDo}><Icon name="delete" iconSize={14} /></IconBtn>
-    <TextBtn onClick={allToggle}>선택취소</TextBtn>
+    <TextBtn onClick={allCancel}>선택취소</TextBtn>
 
     </SelectHidden>
       : ''
-}
+  }
     </TextBox>
     <CardBox>
 
@@ -126,4 +133,4 @@ function CardList () {
   )
 }
 
-export default CardList
+export default ItemList

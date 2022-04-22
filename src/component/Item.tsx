@@ -1,27 +1,22 @@
-import { useDispatch } from 'react-redux'
-import saveAs from 'file-saver'
-import { action } from '../redux/modules/toDoList'
-import Card from '../element/Card'
-
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { action } from '../redux/modules/toDoList'
+import saveAs from 'file-saver'
 import tw from 'tailwind-styled-components'
+import Card from '../element/Card'
 import Modals from './Modals'
 import Icon from '../element/Icon'
 
 interface IProps {
   toDo: ToDo;
-
   checker: number,
   setChecker: Function
 
 }
 
-const Headers = tw.div`
-fixed h-14 w-full border-b border-gray-200 justify-start items-center gap-3 p-2
-`
 
-const CloseBtn = tw.button`
-fixed bg-gray-100 h-8 w-14 rounded-[10%] px-4 text-gray-600 
+const CloseBtn = tw.div`
+fixed bg-gray-100 h-8 w-12 rounded-[10%] px-3 pt-1 text-gray-600 inset-3 cursor-pointer
 `
 
 const ModalCover = tw.div`
@@ -47,7 +42,7 @@ flex flex-col bg-white text-gray-400 gap-1 rounded-sm py-1
 `
 
 const MenuBtns = tw.button`
-text-left hover:bg-gray-100 p-1 px-2 z-20
+text-left hover:bg-gray-100 p-1 px-2 z-auto
 `
 
 const Hidden = tw.div`
@@ -60,6 +55,7 @@ function Item ({ toDo, checker, setChecker }: IProps) {
   const [modal, setModal] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
   const dispatch = useDispatch()
+
   const onToggle = (event: any) => {
     dispatch(action.toggleToDo({ id, checked: event.target.checked as boolean }))
     setChecker(checker + 1)
@@ -68,9 +64,10 @@ function Item ({ toDo, checker, setChecker }: IProps) {
       return setChecker(checker - 1)
     }
   }
+  
 
   const onlyOneDeleteToDo = () => {
-    dispatch(action.dToDo({ id }))
+    dispatch(action.dToDo({ _id }))
   }
 
   const downloadToDo = (e:any) => {
@@ -82,8 +79,6 @@ function Item ({ toDo, checker, setChecker }: IProps) {
       return
     }
     setModal(state => !state)
-
-    // console.log(id)
   }
 
   const controlMenu = (e:any) => {
@@ -116,12 +111,12 @@ function Item ({ toDo, checker, setChecker }: IProps) {
     { modal &&
 
     <ModalCover>
-    <Headers>
+
     <CloseBtn onClick={controlModal}>
      <Icon name="cancel" iconSize={24} />
      </CloseBtn>
-    </Headers>
-      <Modals toDo={toDo} />
+
+      <Modals toDo={toDo} crn_id={id} />
     </ModalCover>
     }
 
