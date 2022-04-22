@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/clonecodinghouse/static/css/main.7773213b.css",
+    "main.js": "/clonecodinghouse/static/js/main.51e543c5.js",
+    "static/media/slick.svg": "/clonecodinghouse/static/media/slick.2630a3e3eab21c607e21.svg",
+    "static/media/slick.eot": "/clonecodinghouse/static/media/slick.a4e97f5a2a64f0ab1323.eot",
+    "static/media/slick.ttf": "/clonecodinghouse/static/media/slick.c94f7671dcc99dce43e2.ttf",
+    "static/media/slick.woff": "/clonecodinghouse/static/media/slick.295183786cd8a1389865.woff",
+    "index.html": "/clonecodinghouse/index.html",
+    "static/media/Delete.svg": "/clonecodinghouse/static/media/Delete.0e6d77bdae8670cfa222194f720dedce.svg",
+    "static/media/Download.svg": "/clonecodinghouse/static/media/Download.433556d8da752cbc3fa4682bb4e851f4.svg",
+    "static/media/Dots.svg": "/clonecodinghouse/static/media/Dots.7b52e4538557be4b1fd57864315b77f0.svg",
+    "static/media/Cancel.svg": "/clonecodinghouse/static/media/Cancel.20d0610fa7a134abe2f0fef02a215981.svg",
+    "main.7773213b.css.map": "/clonecodinghouse/static/css/main.7773213b.css.map",
+    "main.51e543c5.js.map": "/clonecodinghouse/static/js/main.51e543c5.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7773213b.css",
+    "static/js/main.51e543c5.js"
+  ]
+}
