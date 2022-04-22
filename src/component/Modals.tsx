@@ -59,7 +59,8 @@ function Modals ({ toDo, crn_id }: IProps) {
       const customs = useRef<Slider>();
 
   const [slideIndex, setSlideIndex] = useState(crn_id)
-  const [render, setRender] = useState(false)
+  const [renderPrev, setRenderPrev] = useState(false)
+  const [renderNext, setRenderNext] = useState(false)
   const settings = {
     dots: false,
     infinite: false,
@@ -80,16 +81,23 @@ function Modals ({ toDo, crn_id }: IProps) {
   // }
 
   const downloadToDo = () => {
-    if (render === false) {
+    if (renderNext === false && renderPrev === false) {
       slideArray.forEach((x) => {
         if (x.id === slideIndex) {
           console.log(x.id, slideIndex)
           saveAs(x._id, 'save.jpg')
         }
       })
-    } else {
+    } else if (renderNext === true) {
       slideArray.forEach((x) => {
         if (x.id === slideIndex -1) {
+          console.log(x.id, slideIndex)
+          saveAs(x._id, 'save.jpg')
+        }
+      })
+    } else if (renderPrev === true) {
+      slideArray.forEach((x) => {
+        if (x.id === slideIndex +1) {
           console.log(x.id, slideIndex)
           saveAs(x._id, 'save.jpg')
         }
@@ -99,16 +107,24 @@ function Modals ({ toDo, crn_id }: IProps) {
   }
 
   const onlyOneDeleteToDo = () => {
-    if (render === false) {
+    if (renderNext === false && renderPrev === false) {
     slideArray.forEach((x) => {
       if (x.id === slideIndex) {
         let _id = x._id
         dispatch(action.dToDo({_id}))
       }
     })
-    } else {
+    } else if (renderNext === true)  {
       slideArray.forEach((x) => {
         if (x.id === slideIndex -1) {
+          let _id = x._id
+          console.log(x.id, slideIndex)
+          dispatch(action.dToDo({_id}))
+        }
+      })
+    } else if (renderPrev === true)  {
+      slideArray.forEach((x) => {
+        if (x.id === slideIndex +1) {
           let _id = x._id
           console.log(x.id, slideIndex)
           dispatch(action.dToDo({_id}))
@@ -119,11 +135,11 @@ function Modals ({ toDo, crn_id }: IProps) {
 
   }
 
-  // useEffect(() => {
-  //     setIndexToDo()
-  // }, [])
+  useEffect(() => {
+      next()
+  }, [])
   
-  const prev = (e:any) => {
+  const prev = () => {
     if (slideIndex < 0) {
       return
     }
@@ -131,12 +147,13 @@ function Modals ({ toDo, crn_id }: IProps) {
       return
     }
     setSlideIndex(slideIndex - 1)
+    console.log(slideIndex)
     customs.current.slickGoTo(slideIndex, true)
-    setRender(true)
-    
+    setRenderNext(false)
+    setRenderPrev(true)
 
   }
-  const next = (e:any) => {
+  const next = () => {
     if (slideIndex >= slideArray.length) {
       return 
     }
@@ -148,7 +165,8 @@ function Modals ({ toDo, crn_id }: IProps) {
       setSlideIndex(slideIndex + 1)
       console.log(slideIndex)
       customs.current.slickGoTo(slideIndex, true)
-      setRender(true)
+      setRenderNext(true)
+      setRenderPrev(false)
     }
     
   }
