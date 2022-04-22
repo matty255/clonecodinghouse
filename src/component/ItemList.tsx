@@ -6,6 +6,7 @@ import { action } from '../redux/modules/toDoList'
 import saveAs from 'file-saver'
 import Item from './Item'
 import Icon from '../element/Icon'
+import Swal from "sweetalert2";
 
 const CardBox = tw.div`
 flex flex-col sm:grid sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 justify-start items-center gap-[1.1rem] w-11/12 mx-auto
@@ -51,7 +52,27 @@ function ItemList () {
   const toDoList: ToDoList = useSelector((state: RootState) => state.toDoList.toDoList)
 
   const onDeleteToDo = () => {
-    dispatch(action.deleteToDo(toDoList))
+    Swal.fire({
+      html:
+      '<img src="https://resources.archisketch.com/editor/assets_test/img/pop-up/gallery_delete@2x.gif" alt="gallery_delete"></img>' +
+      `<div> ${checker}개의 선택된 파일을 삭제하시겠어요? </div>
+      <div> 삭제하면 되돌릴 수 없습니다 </div>`,
+      showCancelButton: true,
+      buttonsStyling: false,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '삭제'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        )
+        dispatch(action.deleteToDo(toDoList))
+      }
+    })
+    
   }
 
   const downloadToDo = (e:any) => {
