@@ -116,7 +116,7 @@ function Item ({ toDo, checker, setChecker }: IProps) {
      <Icon name="cancel" iconSize={24} />
      </CloseBtn>
 
-      <Modals toDo={toDo} crn_id={id} />
+      <Modals toDo={toDo} crn_id={id} art_id={_id} />
     </ModalCover>
     }
 

@@ -16,7 +16,8 @@ interface IProps {
         _id:string,
         checked:boolean
     }
-    crn_id: number
+    crn_id: number,
+    art_id: string,
 }
 
 export const Customs = tw(Slider)`
@@ -43,7 +44,7 @@ const TextBtn = tw.button`
  px-2 py-[0.15rem] border border-gray-200 mx-1 rounded-sm text-gray-500 w-28 flex justify-center flex-row items-center 
 `
 
-function Modals ({ toDo, crn_id }: IProps) {
+function Modals ({ toDo, crn_id, art_id }: IProps) {
   const { id, _id } = toDo
 
   const dispatch = useDispatch()
@@ -61,6 +62,18 @@ function Modals ({ toDo, crn_id }: IProps) {
   const [slideIndex, setSlideIndex] = useState(crn_id)
   const [renderPrev, setRenderPrev] = useState(false)
   const [renderNext, setRenderNext] = useState(false)
+  const [render, setRender] = useState(true)
+
+
+  const setIndexToDo = () => {
+    slideArray.forEach((x) => {
+      if (x._id === art_id) {
+        setSlideIndex(x.id)
+        console.log(x.id)
+      }
+    })
+  }
+
   const settings = {
     dots: false,
     infinite: false,
@@ -71,14 +84,6 @@ function Modals ({ toDo, crn_id }: IProps) {
     arrows: false
 
   }
-
-  // const setIndexToDo = () => {
-  //   slideArray.forEach((x) => {
-  //     if (x._id === _id) {
-  //       setSlideIndex(x.id)
-  //     }
-  //   })
-  // }
 
   const downloadToDo = () => {
     if (renderNext === false && renderPrev === false) {
@@ -91,14 +96,14 @@ function Modals ({ toDo, crn_id }: IProps) {
     } else if (renderNext === true) {
       slideArray.forEach((x) => {
         if (x.id === slideIndex -1) {
-          console.log(x.id, slideIndex)
+          // console.log(x.id, slideIndex)
           saveAs(x._id, 'save.jpg')
         }
       })
     } else if (renderPrev === true) {
       slideArray.forEach((x) => {
         if (x.id === slideIndex +1) {
-          console.log(x.id, slideIndex)
+          // console.log(x.id, slideIndex)
           saveAs(x._id, 'save.jpg')
         }
       })
@@ -118,7 +123,7 @@ function Modals ({ toDo, crn_id }: IProps) {
       slideArray.forEach((x) => {
         if (x.id === slideIndex -1) {
           let _id = x._id
-          console.log(x.id, slideIndex)
+          // console.log(x.id, slideIndex)
           dispatch(action.dToDo({_id}))
         }
       })
@@ -126,7 +131,7 @@ function Modals ({ toDo, crn_id }: IProps) {
       slideArray.forEach((x) => {
         if (x.id === slideIndex +1) {
           let _id = x._id
-          console.log(x.id, slideIndex)
+          // console.log(x.id, slideIndex)
           dispatch(action.dToDo({_id}))
         }
       })
@@ -136,8 +141,13 @@ function Modals ({ toDo, crn_id }: IProps) {
   }
 
   useEffect(() => {
-      next()
-  }, [])
+    setIndexToDo()
+    next()
+    const aaa = setTimeout(() => {
+      setIndexToDo()
+      setRender(false)
+  }, 200);
+  }, [render])
   
   const prev = () => {
     if (slideIndex < 0) {
@@ -178,28 +188,29 @@ function Modals ({ toDo, crn_id }: IProps) {
       <Icon name="download" iconSize={14} /> <span className="text-sm">다운로드</span></TextBtn>
     <IconBtn onClick={onlyOneDeleteToDo}> <Icon name="delete" iconSize={14} /></IconBtn>
     </FlexBox>
-      <div className="flex flex-row">
+    {render ? "" :  <div className="flex flex-row">
 
-                <PrevBtn onClick={prev}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12.707 17.293L8.414 13 18 13 18 11 8.414 11 12.707 6.707 11.293 5.293 4.586 12 11.293 18.707z" fill="currentColor"></path></svg>
-                </PrevBtn>
+<PrevBtn onClick={prev}>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12.707 17.293L8.414 13 18 13 18 11 8.414 11 12.707 6.707 11.293 5.293 4.586 12 11.293 18.707z" fill="currentColor"></path></svg>
+</PrevBtn>
 
-                <Customs {...settings} ref={customs}>
-                  {slideArray &&
-                  slideArray.map((toDo, index) =>
-      
-                  <div key={toDo.id}>
-                    <Slides toDo={toDo} />
-                  </div>
-                  
-                  )}
-                </Customs>
+<Customs {...settings} ref={customs}>
+  {slideArray &&
+  slideArray.map((toDo, index) =>
 
-                <NextBtn onClick={next}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M11.293 17.293L12.707 18.707 19.414 12 12.707 5.293 11.293 6.707 15.586 11 6 11 6 13 15.586 13z" fill="currentColor"></path></svg>
+  <div key={toDo.id}>
+    <Slides toDo={toDo} />
+  </div>
+  
+  )}
+</Customs>
 
-                </NextBtn>
-            </div>
+<NextBtn onClick={next}>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M11.293 17.293L12.707 18.707 19.414 12 12.707 5.293 11.293 6.707 15.586 11 6 11 6 13 15.586 13z" fill="currentColor"></path></svg>
+
+</NextBtn>
+</div>}
+     
 
     </>
   )
