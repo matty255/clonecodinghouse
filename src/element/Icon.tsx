@@ -1,8 +1,8 @@
 import React from 'react'
-import { ReactComponent as Download } from '../static/Download.svg'
-import { ReactComponent as Delete } from '../static/Delete.svg'
-import { ReactComponent as Cancel } from '../static/Cancel.svg'
-import { ReactComponent as Dots } from '../static/Dots.svg'
+import { ReactComponent as Download } from '../static/Download.svg';
+import { ReactComponent as Delete } from '../static/Delete.svg';
+import { ReactComponent as Cancel } from '../static/Cancel.svg';
+import { ReactComponent as Dots } from '../static/Dots.svg';
 
 interface IconProps {
   name: string,

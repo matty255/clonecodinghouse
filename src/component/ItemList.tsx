@@ -1,47 +1,12 @@
-import React, { useState } from 'react'
-import tw from 'tailwind-styled-components'
-import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from '../redux/configureStore'
-import { action } from '../redux/modules/toDoList'
-import saveAs from 'file-saver'
-import Item from './Item'
-import Icon from '../element/Icon'
+import React, { useState } from 'react';
+import tw from 'tailwind-styled-components';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../redux/configureStore';
+import { action } from '../redux/modules/toDoList';
+import saveAs from 'file-saver';
+import Item from './Item';
+import Icon from '../element/Icon';
 import Swal from "sweetalert2";
-
-const CardBox = tw.div`
-flex flex-col sm:grid sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 justify-start items-center gap-[1.1rem] w-11/12 mx-auto
-`
-const Headers = tw.div`
-flex h-12  border-b border-gray-200 justify-start items-center gap-3 p-2
-`
-
-const CloseBtn = tw.button`
-flex justify-start items-start bg-gray-100 h-8 w-11 rounded-[10%] px-2.5 pt-1 text-gray-600
-`
-
-const TextBox = tw.div`
-w-11/12 h-20 flex items-center pb-4 mx-auto
-`
-
-const Title = tw.h1`
-font-bold text-lg text-gray-800 w-1/3 flex justify-center
-`
-
-const Subtitle = tw.div`
- tracking-widest inline-flex justify-start w-1/3 text-gray-500 text-sm gap-2
-`
-
-const SelectHidden = tw.div`
- w-1/3 justify-end text-right flex
-`
-
-const IconBtn = tw.button`
- p-1.5 border border-gray-200 mx-1 rounded-sm text-gray-500
-`
-
-const TextBtn = tw.button`
- px-2 py-[0.15rem] border border-gray-200 mx-1 rounded-sm text-gray-500
-`
 
 function ItemList () {
   const dispatch = useDispatch()
@@ -56,12 +21,13 @@ function ItemList () {
       html:
       '<img src="https://resources.archisketch.com/editor/assets_test/img/pop-up/gallery_delete@2x.gif" alt="gallery_delete"></img>' +
       `<div> ${checker}개의 선택된 파일을 삭제하시겠어요? </div>
-      <div> 삭제하면 되돌릴 수 없습니다 </div>`,
+      <div> 삭제하면 되돌릴 수 없습니다. </div>`,
       showCancelButton: true,
-      buttonsStyling: false,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: '삭제'
+      // buttonsStyling: false,
+      confirmButtonColor: '#6db2c5',
+      cancelButtonColor: '#6db2c5',
+      cancelButtonText: '돌아가기',
+      confirmButtonText: '삭제하기'
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire(
@@ -79,8 +45,11 @@ function ItemList () {
   const downloadToDo = (e:any) => {
     toDoList.forEach((x) => {
       if (x.checked === true) {
-        console.log(x)
+        // console.log(x)
         saveAs(x._id, 'save.jpg')
+        setChecker(0)
+        dispatch(action.toggleToDo({ id: x.id, checked: false }))
+        setRerender(true)
       }
     })
   }
@@ -123,7 +92,8 @@ function ItemList () {
  <TextBox>
   { checker > 0
     ? <><Subtitle>{checker} 개의 렌더 이미지 선택됨
-    <input type="checkbox" className="mt-1 ml-2" onChange={allToggle}/>  모두선택 </Subtitle>
+    <input type="checkbox" className="mt-1 ml-2 text-[#6db2c5] 
+rounded-sm transition ease-in-out duration-1000 focus:ring-0 focus-within:ring-0 " onChange={allToggle}/>  모두선택 </Subtitle>
     </>
     : <Subtitle>{toDoList.length} 개의 렌더샷</Subtitle> }
 
@@ -154,5 +124,40 @@ function ItemList () {
     </>
   )
 }
+
+const CardBox = tw.div`
+flex flex-col sm:grid sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 justify-start items-center gap-[1.1rem] w-11/12 mx-auto 
+`
+const Headers = tw.div`
+flex h-12  border-b border-gray-200 justify-start items-center gap-3 p-2
+`
+
+const CloseBtn = tw.button`
+flex justify-start items-start bg-gray-100 h-8 w-11 rounded-[10%] px-2.5 pt-1 text-gray-600
+`
+
+const TextBox = tw.div`
+w-11/12 h-20 flex items-center pb-4 mx-auto
+`
+
+const Title = tw.h1`
+font-bold text-lg text-gray-800 w-1/3 flex justify-center
+`
+
+const Subtitle = tw.div`
+ tracking-widest inline-flex justify-start w-1/3 text-gray-500 text-sm gap-2
+`
+
+const SelectHidden = tw.div`
+ w-1/3 justify-end text-right flex
+`
+
+const IconBtn = tw.button`
+ p-1.5 border border-gray-200 mx-1 rounded-sm text-gray-500
+`
+
+const TextBtn = tw.button`
+ px-2 py-[0.15rem] border border-gray-200 mx-1 rounded-sm text-gray-500
+`
 
 export default ItemList
