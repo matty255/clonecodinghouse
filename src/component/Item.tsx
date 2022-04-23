@@ -6,6 +6,7 @@ import tw from 'tailwind-styled-components'
 import Card from '../element/Card'
 import Modals from './Modals'
 import Icon from '../element/Icon'
+import Swal from "sweetalert2";
 
 interface IProps {
   toDo: ToDo;
@@ -67,7 +68,28 @@ function Item ({ toDo, checker, setChecker }: IProps) {
   
 
   const onlyOneDeleteToDo = () => {
-    dispatch(action.dToDo({ _id }))
+    Swal.fire({
+      html:
+      '<img src="https://resources.archisketch.com/editor/assets_test/img/pop-up/gallery_delete@2x.gif" alt="gallery_delete"></img>' +
+      `<div> ${checker}개의 선택된 파일을 삭제하시겠어요? </div>
+      <div> 삭제하면 되돌릴 수 없습니다 </div>`,
+      showCancelButton: true,
+      buttonsStyling: false,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '삭제'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          '삭제 완료!',
+          '성공적으로 삭제되었습니다.',
+          'success'
+        )
+        dispatch(action.dToDo({ _id }))
+      }
+    })
+    
+    
   }
 
   const downloadToDo = (e:any) => {
