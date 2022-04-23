@@ -65,11 +65,12 @@ function ItemList () {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire(
-          'Deleted!',
-          'Your file has been deleted.',
+          '삭제 완료!',
+          '성공적으로 삭제되었습니다.',
           'success'
         )
         dispatch(action.deleteToDo(toDoList))
+        setChecker(0)
       }
     })
     

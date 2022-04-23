@@ -7,6 +7,7 @@ import Icon from '../element/Icon'
 import Slides from './Slides'
 import Slider from 'react-slick'
 import saveAs from 'file-saver'
+import Swal from "sweetalert2";
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
@@ -112,37 +113,58 @@ function Modals ({ toDo, crn_id, art_id }: IProps) {
   }
 
   const onlyOneDeleteToDo = () => {
-    if (renderNext === false && renderPrev === false) {
-    slideArray.forEach((x) => {
-      if (x.id === slideIndex) {
-        let _id = x._id
-        dispatch(action.dToDo({_id}))
+    Swal.fire({
+      html:
+      '<img src="https://resources.archisketch.com/editor/assets_test/img/pop-up/gallery_delete@2x.gif" alt="gallery_delete"></img>' +
+      `<div> 이 파일을 삭제하시겠어요? </div>
+      <div> 삭제하면 되돌릴 수 없습니다 </div>`,
+      showCancelButton: true,
+      buttonsStyling: false,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '삭제'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          '삭제 완료!',
+          '성공적으로 삭제되었습니다.',
+          'success'
+        )
+        if (renderNext === false && renderPrev === false) {
+          slideArray.forEach((x) => {
+            if (x.id === slideIndex) {
+              let _id = x._id
+              dispatch(action.dToDo({_id}))
+            }
+          })
+          } else if (renderNext === true)  {
+            slideArray.forEach((x) => {
+              if (x.id === slideIndex -1) {
+                let _id = x._id
+                // console.log(x.id, slideIndex)
+                dispatch(action.dToDo({_id}))
+              }
+            })
+          } else if (renderPrev === true)  {
+            slideArray.forEach((x) => {
+              if (x.id === slideIndex +1) {
+                let _id = x._id
+                // console.log(x.id, slideIndex)
+                dispatch(action.dToDo({_id}))
+              }
+            })
+          }
+          slideArray.filter((todo: ToDo) => todo.id !== id)
+      
       }
     })
-    } else if (renderNext === true)  {
-      slideArray.forEach((x) => {
-        if (x.id === slideIndex -1) {
-          let _id = x._id
-          // console.log(x.id, slideIndex)
-          dispatch(action.dToDo({_id}))
-        }
-      })
-    } else if (renderPrev === true)  {
-      slideArray.forEach((x) => {
-        if (x.id === slideIndex +1) {
-          let _id = x._id
-          // console.log(x.id, slideIndex)
-          dispatch(action.dToDo({_id}))
-        }
-      })
-    }
-    slideArray.filter((todo: ToDo) => todo.id !== id)
-
+    
+  
+    
   }
 
   useEffect(() => {
-    setIndexToDo()
-    next()
+
     const aaa = setTimeout(() => {
       setIndexToDo()
       setRender(false)
@@ -156,11 +178,17 @@ function Modals ({ toDo, crn_id, art_id }: IProps) {
     else if (customs.current === undefined) {
       return
     }
-    setSlideIndex(slideIndex - 1)
-    console.log(slideIndex)
-    customs.current.slickGoTo(slideIndex, true)
-    setRenderNext(false)
-    setRenderPrev(true)
+    else{
+      setSlideIndex((slideIndex) => slideIndex -1)
+      const aaa = setTimeout(() => {
+        customs.current?.slickGoTo(slideIndex, true)
+        console.log(slideIndex)
+    }, 100);
+      
+      setRenderNext(false)
+      setRenderPrev(true)
+    }
+
 
   }
   const next = () => {
@@ -170,11 +198,12 @@ function Modals ({ toDo, crn_id, art_id }: IProps) {
     else if (customs.current === undefined) {
       return
     }
-
     else {
-      setSlideIndex(slideIndex + 1)
-      console.log(slideIndex)
-      customs.current.slickGoTo(slideIndex, true)
+      setSlideIndex((slideIndex) => slideIndex +1)
+      const aaa = setTimeout(() => {
+        customs.current?.slickGoTo(slideIndex, true)
+        console.log(slideIndex)
+    }, 100);
       setRenderNext(true)
       setRenderPrev(false)
     }
@@ -184,34 +213,32 @@ function Modals ({ toDo, crn_id, art_id }: IProps) {
   return (
     <>
     <FlexBox>
-    <TextBtn onClick={downloadToDo}>
-      <Icon name="download" iconSize={14} /> <span className="text-sm">다운로드</span></TextBtn>
-    <IconBtn onClick={onlyOneDeleteToDo}> <Icon name="delete" iconSize={14} /></IconBtn>
+      <TextBtn onClick={downloadToDo}>
+        <Icon name="download" iconSize={14} /> <span className="text-sm">다운로드</span>
+      </TextBtn>
+      <IconBtn onClick={onlyOneDeleteToDo}> <Icon name="delete" iconSize={14} /></IconBtn>
     </FlexBox>
     {render ? "" :  <div className="flex flex-row">
 
-<PrevBtn onClick={prev}>
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12.707 17.293L8.414 13 18 13 18 11 8.414 11 12.707 6.707 11.293 5.293 4.586 12 11.293 18.707z" fill="currentColor"></path></svg>
-</PrevBtn>
+    <PrevBtn onClick={prev}>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12.707 17.293L8.414 13 18 13 18 11 8.414 11 12.707 6.707 11.293 5.293 4.586 12 11.293 18.707z" fill="currentColor"></path></svg>
+    </PrevBtn>
 
-<Customs {...settings} ref={customs}>
-  {slideArray &&
-  slideArray.map((toDo, index) =>
+    <Customs {...settings} ref={customs}>
+      {slideArray &&
+      slideArray.map((toDo, index) =>
+      <div key={toDo.id}>
+        <Slides toDo={toDo} />
+      </div>
+      
+      )}
+    </Customs>
 
-  <div key={toDo.id}>
-    <Slides toDo={toDo} />
-  </div>
-  
-  )}
-</Customs>
-
-<NextBtn onClick={next}>
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M11.293 17.293L12.707 18.707 19.414 12 12.707 5.293 11.293 6.707 15.586 11 6 11 6 13 15.586 13z" fill="currentColor"></path></svg>
-
-</NextBtn>
-</div>}
+    <NextBtn onClick={next}>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M11.293 17.293L12.707 18.707 19.414 12 12.707 5.293 11.293 6.707 15.586 11 6 11 6 13 15.586 13z" fill="currentColor"></path></svg>
+    </NextBtn>
+    </div>}
      
-
     </>
   )
 }
