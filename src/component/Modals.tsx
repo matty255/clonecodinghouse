@@ -26,11 +26,13 @@ mx-auto w-full h-screen -z-20
 `
 
 const PrevBtn = tw.button`
-  z-10 text-gray-500 fixed left-10 top-1/2 bg-gray-100 rounded-md p-2
+  z-10 text-gray-500 fixed left-10 top-1/2 bg-gray-100 rounded-md p-2 transi
+  ${(props:any) => (props.disabled === true ? `hidden` : "")};
 `
 
 const NextBtn = tw.button`
   z-10 text-gray-500 fixed right-10 top-1/2 bg-gray-100 rounded-md p-2
+  ${(props:any) => (props.disabled === true ? `hidden` : "")};
 `
 
 const FlexBox = tw.div`
@@ -82,7 +84,8 @@ function Modals ({ toDo, crn_id, art_id }: IProps) {
     slidesToShow: 1,
     slidesToScroll: 1,
     initialSlide: slideIndex,
-    arrows: false
+    nextArrow: <NextBtn />,
+    prevArrow: <PrevBtn />
 
   }
 
@@ -220,7 +223,7 @@ function Modals ({ toDo, crn_id, art_id }: IProps) {
     </FlexBox>
     {render ? "" :  <div className="flex flex-row">
 
-    <PrevBtn onClick={prev}>
+    <PrevBtn onClick={prev} disabled={slideIndex === -1}>
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12.707 17.293L8.414 13 18 13 18 11 8.414 11 12.707 6.707 11.293 5.293 4.586 12 11.293 18.707z" fill="currentColor"></path></svg>
     </PrevBtn>
 
@@ -234,7 +237,7 @@ function Modals ({ toDo, crn_id, art_id }: IProps) {
       )}
     </Customs>
 
-    <NextBtn onClick={next}>
+    <NextBtn onClick={next} disabled={slideIndex === slideArray.length}>
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M11.293 17.293L12.707 18.707 19.414 12 12.707 5.293 11.293 6.707 15.586 11 6 11 6 13 15.586 13z" fill="currentColor"></path></svg>
     </NextBtn>
     </div>}
